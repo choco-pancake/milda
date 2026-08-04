@@ -1409,6 +1409,7 @@ function Modal({
 
 export default function Milda({ syllabusUrl }: MildaProps) {
     const [introOpen, setIntroOpen] = useState(true);
+    const [sidebarHovered, setSidebarHovered] = useState(false);
     const [role, setRole] = useState<Role>('student');
     const [view, setView] = useState<View>('dashboard');
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -1728,10 +1729,21 @@ export default function Milda({ syllabusUrl }: MildaProps) {
             )}
 
             <div className="app-shell">
-                <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
+                <div
+                    className={`sidebar-backdrop ${sidebarOpen ? 'open' : ''}`}
+                    onClick={() => setSidebarOpen(false)}
+                />
+                <aside
+                    className={`sidebar ${sidebarOpen ? 'open' : ''}`}
+                    onMouseEnter={() => setSidebarHovered(true)}
+                    onMouseLeave={() => setSidebarHovered(false)}
+                >   
                     <div className="brand">
-                        <img src="/images/milda.png" alt="MILDA" className="brand-image" />
-                        <p>Learn. Verify. Share Responsibly.</p>
+                        <img
+                            src="/icons/MILDALOGO.png"
+                            alt="MILDA"
+                            className="brand-logo"
+                        />
                     </div>
                     {visibleNavGroups.map((group) => (
                         <div className="nav-group" key={group.label}>
@@ -1747,7 +1759,7 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                                         type="button"
                                     >
                                         <item.icon />
-                                        {item.label}
+                                        <span className="nav-label-text">{item.label}</span>
                                     </button>
                                 ))}
                             </nav>
