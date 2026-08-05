@@ -140,13 +140,13 @@
     .app-shell {
         min-height: 100vh;
         display: grid;
-        grid-template-columns: 120px 1fr;
+        grid-template-columns: 96px 1fr;
         transition: grid-template-columns 0.6s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     @media (min-width: 821px) {
         .app-shell:has(.sidebar:hover) {
-            grid-template-columns: 258px 1fr;
+            grid-template-columns: 280px 1fr;
         }
     }
 
@@ -158,22 +158,35 @@
               transition: opacity 0.25s ease 0.1s;
           }
 
-          .nav-label-text {
-              opacity: 1;
-              white-space: nowrap;
-              transition: opacity 0.25s ease 0.1s;
+          .sidebar-progress {
+              transition: opacity 0.25s ease 0.15s;
           }
 
-          .sidebar:not(:hover) .nav-label,
-          .sidebar:not(:hover) .sidebar-progress {
+          .nav-label-text {
+              opacity: 1;
+              max-width: 190px;
+              overflow: hidden;
+              white-space: nowrap;
+              transition: opacity 0.25s ease 0.1s, max-width 0.3s ease 0.1s;
+          }
+
+          .sidebar:not(:hover) .nav-label {
               opacity: 0;
               pointer-events: none;
           }
+
+          .sidebar:not(:hover) .sidebar-progress {
+              opacity: 0;
+              pointer-events: none;
+              transition: opacity 0.2s ease;
+          }
           
           .sidebar:not(:hover) .nav-label-text {
-            display: none
+            opacity: 0;
+            max-width: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease, max-width 0.25s ease;
           }
-
       } 
 
     .sidebar {
@@ -220,9 +233,9 @@
     .brand-logo {
         height: 34px;
         width: 168px;
+        flex-shrink: 0;
         object-fit: contain;
-        transition: width 0.6s cubic-bezier(0.33, 1, 0.68, 1),
-                    height 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+        object-position: left center;
     }
 
     @media (min-width: 821px) {
@@ -247,39 +260,36 @@
     .nav-label { padding:0 10px; font-size:10px; text-transform:uppercase; letter-spacing:.13em; color:rgba(255,255,255,.48); margin-bottom: 10px; }
     .nav { display:flex; flex-direction:column; gap:6px; justify-items: center; align-items: center; }
     .nav button {
-          width:100%;
-          padding:11px 12px;
-          border-radius:12px;
-          color:rgba(255,255,255,.74);
-          background:transparent;
-          display:flex;
-          align-items:center;
-          gap:11px;
-          text-align:left;
-          transition: justify-content 0.3s ease, padding 0.3s ease;
-        }
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 12px;
+        color: rgba(255,255,255,.74);
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        text-align: left;
+    }
 
-        .nav button {
-            justify-content: center;
-        }
+    .sidebar:hover .nav button {
+        justify-content: flex-start;
+        gap: 11px;
+    }
 
-        .sidebar:hover .nav button {
-            justify-content: flex-start;
-            
-        }
+    .nav button:hover,
+    .nav button.active {
+        color: #231F20;
+        background: #EFE6DD;
+    }
 
-        @media (min-width: 821px) {
-            .sidebar:not(:hover) .nav button {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
-              width: 56px;
-              height: 56px;
-              padding: 0;
-              margin: 0 auto;
-            }
-        }
+    .nav button svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        padding: 0;
+    }
 
     .nav button:hover, .nav button.active { color: #231F20; background: #EFE6DD; transform:translateX(2px); }
 
@@ -363,25 +373,13 @@
     .view.active { display:block; animation:fade .22s ease; }
     @keyframes fade { from { opacity:0; transform:translateY(5px);} to {opacity:1;transform:none;} }
 
-    .hero {
-      position:relative;
-      overflow:hidden;
-      border-radius:var(--radius-lg);
-      padding:30px;
-      color:#fff;
-      background: var(--primary);
-      box-shadow:var(--shadow);
-      display:grid;
-      grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);
-      gap:24px;
-    }
     .hero::after { content:"";position:absolute;right:-90px;bottom:-130px;width:320px;height:320px;border-radius:50%;border:50px solid rgba(255,255,255,.06); }
-    .hero-copy, .hero-progress { position:relative;z-index:1; }
-    .eyebrow { display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.15);font-size:11px;font-weight:750; }
+    .eyebrow-logo { height:16px;width:auto;display:block; }
     .hero h3 { margin:16px 0 11px; font-size:clamp(30px,4vw,48px);line-height:1.04;letter-spacing:-.035em;max-width:780px; }
     .hero p { margin:0 0 20px;color:rgba(255,255,255,.76);line-height:1.65;max-width:760px; }
     .hero-actions { display:flex;flex-wrap:wrap;gap:10px; }
     .download-link { text-decoration:none; }
+
     .btn { padding:11px 15px;border-radius:12px;font-weight:780;transition:.18s ease;display:inline-flex;align-items:center;gap:8px;justify-content:center; }
     .btn:hover { transform:translateY(-1px); }
     .btn-primary { background:#ffffff;color:var(--primary);border:1px solid #ffffff; }
@@ -390,16 +388,14 @@
     .btn-outline { background:var(--surface);color:var(--ink);border:1px solid var(--line); }
     .btn-danger { background:#fbeaec;color:var(--red);border:1px solid #f2cdd1; }
     .btn:disabled { opacity: .5; cursor: not-allowed; pointer-events: none; }
+
+    .dashboard-view .relative.min-w-0.flex-1 { position: relative; }
+    .dashboard-view .relative.min-w-0.flex-1::after { content: ""; position: absolute; top: 0; right: 0; bottom: 8px; /* leave a little room for the scrollbar gap / padding */ width: 72px; pointer-events: none; z-index: 2; background: linear-gradient( to right, transparent 0%, rgba(35, 31, 32, 0.35) 40%, rgba(35, 31, 32, 0.75) 70%, #231f20 100% ); border-radius: 0 16px 16px 0; }
+    .dashboard-view .relative.min-w-0.flex-1 > button[aria-label="Next module"] { z-index: 3; }
     .prototype-label:hover, .icon-btn:hover { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(5,5,106,.12); }
+    
     .exit-role-btn:hover { border-color: var(--primary); }
     .avatar:hover { box-shadow: 0 0 0 1px var(--primary); cursor: pointer;}
-    .hero-progress { align-self:center;display:grid;grid-template-columns:145px 1fr;gap:18px;align-items:center;padding:18px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.09);border-radius:20px;backdrop-filter:blur(10px); }
-    .progress-ring { --p:58; width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:transparent;border:14px solid rgba(255,255,255,.22);border-top-color:#fff;border-right-color:#fff;position:relative; }
-    .progress-ring::before { content:"";width:102px;height:102px;border-radius:50%;background:var(--primary);position:absolute; }
-    .progress-ring strong { position:relative;font-size:28px; }
-    .progress-ring span { position:absolute;margin-top:46px;font-size:10px;color:rgba(255,255,255,.65); }
-    .hero-progress h4 { margin:0 0 7px;font-size:17px; }
-    .hero-progress p { margin:0;font-size:12px; }
 
     .stats-grid { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:18px; }
     .grid-2 { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:18px; }
@@ -435,7 +431,6 @@
     input:focus,textarea:focus,select.form-control:focus { border-color:var(--primary);box-shadow:0 0 0 4px rgba(5,5,106,.12); }
     textarea { min-height:115px;resize:vertical; }
     label { display:block;font-size:11px;color:var(--muted);font-weight:700;margin-bottom:6px; }
-    .input-row { display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:10px; }
     .demo-claim { display:flex;align-items:center;gap:8px;color:var(--blue);background:transparent;padding:7px 0;font-size:11px;font-weight:700; }
 
     .fact-fake-quiz { margin-top: 20px; }
@@ -661,7 +656,6 @@
       .role-select { display:none; }
       .hero-progress { grid-template-columns:120px 1fr; }
       .progress-ring { width:112px;height:112px; }
-      .progress-ring::before { width:86px;height:86px; }
       .grid-3,.grid-2,.module-grid,.result-body { grid-template-columns:1fr; }
       .lesson-objectives { grid-template-columns:1fr; }
     }

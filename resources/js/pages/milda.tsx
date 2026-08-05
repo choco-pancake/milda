@@ -1,16 +1,20 @@
 import { Head } from '@inertiajs/react';
 import {
+    ArrowUpRight,
     Award,
     BarChart3,
     Bell,
     BookOpen,
     Check,
+    ChevronLeft,
+    ChevronRight,
     CircleCheck,
     CircleHelp,
     FileText,
     Home,
     Link,
     Menu,
+    MoveUpRight,
     Search,
     ShieldCheck,
     Sparkles,
@@ -20,7 +24,7 @@ import {
     X,
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import type { ReactNode } from 'react';
 
 import {
@@ -118,6 +122,9 @@ const navGroups: {
         ],
     },
 ];
+
+const PROGRESS_RING_RADIUS = 59;
+const PROGRESS_RING_CIRCUMFERENCE = 2 * Math.PI * PROGRESS_RING_RADIUS;
 
 const claimStatusMeta: Record<CommunityItem['status'], { tag: string; tagClass: string }> = {
     review: { tag: 'Needs Verification', tagClass: 'tag-amber' },
@@ -296,6 +303,7 @@ function IntroScreen({
 
 function DashboardView({
     courseProgress,
+    modules,
     quickClaim,
     quickUrl,
     setQuickClaim,
@@ -307,6 +315,7 @@ function DashboardView({
     toast,
 }: {
     courseProgress: number;
+    modules: typeof initialCourseModules;
     quickClaim: string;
     quickUrl: string;
     setQuickClaim: (value: string) => void;
@@ -317,72 +326,212 @@ function DashboardView({
     syllabusUrl: string;
     toast: (message: string) => void;
 }) {
+    const [animatedProgress, setAnimatedProgress] = useState(0);
+    const moduleCarouselRef = useRef<HTMLDivElement>(null);
+    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollRight, setCanScrollRight] = useState(true);
+
+    const updateScrollButtons = () => {
+        const el = moduleCarouselRef.current;
+        if (!el) return;
+
+        const { scrollLeft, scrollWidth, clientWidth } = el;
+        setCanScrollLeft(scrollLeft > 8);
+        setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 8);
+    };
+
+    useEffect(() => {
+        let frameId: number;
+        const duration = 1100;
+        const start = performance.now();
+
+        const step = (now: number) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setAnimatedProgress(Math.round(eased * courseProgress));
+
+            if (progress < 1) {
+                frameId = requestAnimationFrame(step);
+            }
+        };
+
+        frameId = requestAnimationFrame(step);
+        return () => cancelAnimationFrame(frameId);
+    }, [courseProgress]);
+
+    useEffect(() => {
+        const el = moduleCarouselRef.current;
+        if (!el) return;
+
+        updateScrollButtons();
+        el.addEventListener('scroll', updateScrollButtons, { passive: true });
+        window.addEventListener('resize', updateScrollButtons);
+
+        return () => {
+            el.removeEventListener('scroll', updateScrollButtons);
+            window.removeEventListener('resize', updateScrollButtons);
+        };
+    }, [modules]);
+
     return (
         <section className="view active dashboard-view">
-            <div className="hero">
-                <div className="hero-copy">
-                    <span className="eyebrow">
-                        <Sparkles />
-                        MILDA Course Program
-                    </span>
-                    <h3><b>
-                        Welcome back, Juan.
-                        
-                        Verify before you share.
-                    </b></h3><br />
-                    <p>
-                        Continue your course, complete a real-world verification
-                        mission, and build the evidence-based habits required to
-                        become a Verified MILDA Contributor.
-                    </p>
-                    <div className="hero-actions">
+            <div className="relative overflow-hidden rounded-3xl bg-[#231f20] p-8 lg:p-10">
+                <div className="flex flex-col gap-10 lg:flex-row lg:items-center">
+                    <div className="flex-shrink-0 lg:w-[380px]">
+                        <p className="mb-2 font-josefin text-base text-white/70">Hello, Juan!</p>
+                        <h3 className="mb-8 font-josefin text-4xl font-bold leading-tight text-[#fff9f4] lg:text-[44px]">
+                            Learn to Verify,
+                            <br />
+                            before you share.
+                        </h3>
+                        <div className="mb-8">
+                            <div className="mb-2 flex items-center justify-between font-josefin text-sm text-white/70">
+                                <span>Your progress...</span>
+                                <span>{animatedProgress}%</span>
+                            </div>
+                            <div className="h-2 w-full overflow-hidden rounded-full bg-white/20">
+                                <div
+                                    className="h-full rounded-full bg-[#7ebdc2] transition-[width] duration-1000 ease-out"
+                                    style={{ width: `${animatedProgress}%` }}
+                                />
+                            </div>
+                        </div>
                         <button
-                            className="btn btn-ghost"
+                            className="rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black"
                             onClick={() => showView('learn')}
                             type="button"
                         >
-                            <BookOpen />
                             Continue Course
                         </button>
-                        <a
-                            className="btn btn-ghost download-link"
-                            download
-                            href={syllabusUrl}
-                        >
-                            <FileText />
-                            Download Syllabus
-                        </a>
-                        <button
-                            className="btn btn-ghost"
-                            onClick={() => showView('verify')}
-                            type="button"
-                        >
-                            <Check />
-                            Start Verification
-                        </button>
                     </div>
-                </div>
-                <div className="hero-progress">
-                    <div className="progress-ring">
-                        <strong>{courseProgress}%</strong>
-                        <span>progress</span>
-                    </div>
-                    <div>
-                        <h4>Next: AI-Generated Content</h4>
-                        <p>
-                            Learn how AI hallucinations happen and how to verify
-                            AI-assisted outputs.
-                        </p>
-                        <button
-                            className="btn btn-ghost lesson-button"
-                            onClick={() => openLesson(6)}
-                            type="button"
+
+                    <div className="relative min-w-0 flex-1">
+                        {/* Left fade */}
+                        <div
+                            className={`pointer-events-none absolute inset-y-0 left-0 z-[2] w-20 transition-opacity duration-300 ${
+                                canScrollLeft ? 'opacity-100' : 'opacity-0'
+                            }`}
+                            style={{
+                                background:
+                                    'linear-gradient(to right, #231f20 0%, rgba(35,31,32,0.85) 45%, transparent 100%)',
+                            }}
+                        />
+
+                        {/* Right fade */}
+                        <div
+                            className="pointer-events-none absolute inset-y-0 right-0 z-[2] w-20"
+                            style={{
+                                background:
+                                    'linear-gradient(to left, #231f20 0%, rgba(35,31,32,0.85) 45%, transparent 100%)',
+                            }}
+                        />
+
+                        <div
+                            className="flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                            ref={moduleCarouselRef}
+                            onScroll={updateScrollButtons}
                         >
-                            Open Module 7
-                        </button>
+                            {/* Only first 5 modules */}
+                            {modules.slice(0, 5).map((module, index) => (
+                                <button
+                                    className="w-[240px] flex-shrink-0 snap-start rounded-2xl bg-[#efe6dd] p-6 text-left"
+                                    key={module.title}
+                                    onClick={() => openLesson(index)}
+                                    type="button"
+                                >
+                                    <div className="mb-8 font-josefin text-5xl font-bold text-[#231f20]">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </div>
+                                    <div className="mb-6 font-josefin text-lg font-semibold leading-snug text-[#231f20]">
+                                        {module.title}
+                                    </div>
+                                    <div className="mb-2 flex items-center justify-between text-xs text-[#707070]">
+                                        <span>
+                                            {module.progress === 100
+                                                ? 'Completed'
+                                                : module.progress > 0
+                                                ? 'Ongoing'
+                                                : 'Not Started'}
+                                        </span>
+                                        <span>{module.progress}%</span>
+                                    </div>
+                                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#d8cfc4]">
+                                        <div
+                                            className="h-full rounded-full bg-[#7ebdc2]"
+                                            style={{ width: `${module.progress}%` }}
+                                        />
+                                    </div>
+                                </button>
+                            ))}
+
+                            {/* View All card */}
+                            <button
+                                className="group w-[240px] flex-shrink-0 snap-start rounded-2xl bg-[#efe6dd] p-6 text-left transition-colors duration-300 hover:bg-[#7ebdc2]"
+                                onClick={() => showView('learn')}
+                                type="button"
+                            >
+                                <div className="mb-8 flex h-[60px] items-center">
+                                    <div className="relative h-12 w-12">
+                                        {/* Default arrow */}
+                                        <img
+                                            src="/images/arrow.png"
+                                            alt=""
+                                            className="absolute inset-0 h-full w-full transition-all duration-600 ease-in-out group-hover:scale-95 group-hover:opacity-0"
+                                        />
+
+                                        {/* Hover arrow */}
+                                        <img
+                                            src="/images/arrow-hover.png"
+                                            alt=""
+                                            className="absolute inset-0 h-full w-full scale-95 opacity-0 transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:opacity-100"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="font-josefin text-lg font-semibold leading-snug text-[#231f20]">
+                                    View All
+                                </div>
+                            </button>
+                        </div>
+
+                        {/* Left arrow */}
+                        {canScrollLeft && (
+                            <button
+                                aria-label="Previous module"
+                                className="absolute left-2 top-1/2 z-[3] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#231f20] shadow-lg transition-transform duration-200 hover:scale-105"
+                                onClick={() =>
+                                    moduleCarouselRef.current?.scrollBy({
+                                        left: -260,
+                                        behavior: 'smooth',
+                                    })
+                                }
+                                type="button"
+                            >
+                                <ChevronLeft className="size-5" />
+                            </button>
+                        )}
+
+                        {/* Right arrow */}
+                        {canScrollRight && (
+                            <button
+                                aria-label="Next module"
+                                className="absolute right-2 top-1/2 z-[3] flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white text-[#231f20] shadow-lg transition-transform duration-200 hover:scale-105"
+                                onClick={() =>
+                                    moduleCarouselRef.current?.scrollBy({
+                                        left: 260,
+                                        behavior: 'smooth',
+                                    })
+                                }
+                                type="button"
+                            >
+                                <ChevronRight className="size-5" />
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
+
+            {/* ... rest of the DashboardView stays exactly the same (stats-grid, grid-2, etc.) */}
             <div className="stats-grid">
                 <StatCard
                     detail="↑ 42 this week"
@@ -413,7 +562,7 @@ function DashboardView({
                 <div className="card">
                     <div className="card-header">
                         <div>
-                            <h3><b>Quick Verification</b></h3>
+                            <h3 className="font-josefin"><b>Quick Verification</b></h3>
                             <div className="muted small">
                                 Paste a claim or URL to begin a guided check.
                             </div>
@@ -440,21 +589,22 @@ function DashboardView({
                         <Sparkles />
                         Load a demonstration claim
                     </button>
-                    <div className="input-row">
-                        <input
-                            onChange={(event) =>
-                                setQuickUrl(event.target.value)
-                            }
-                            placeholder="https://example.com/source"
-                            type="url"
-                            value={quickUrl}
-                        />
+                    <div className="relative mt-3">
+                        <div className="flex h-[60px] items-center overflow-hidden rounded-[95px] border border-[#9a9a9a] bg-white pl-6 pr-[150px]">
+                            <input
+                                className="h-full w-full bg-transparent font-josefin text-base text-[#231f20] placeholder:text-[#707070] focus:outline-none"
+                                onChange={(event) => setQuickUrl(event.target.value)}
+                                placeholder="https://example.com/source"
+                                type="url"
+                                value={quickUrl}
+                            />
+                        </div>
                         <button
-                            className="btn btn-dark"
+                            className="group absolute right-[6px] top-1/2 flex -translate-y-1/2 items-center gap-2 rounded-[66px] border border-[#9a9a9a] bg-[#231F20] px-5 py-3 font-josefin text-sm font-semibold text-[#FFF9F4] transition-colors duration-300 ease-in-out hover:border-transparent hover:bg-[#7ebdc2] hover:text-[#231F20]"
                             onClick={analyzeQuickClaim}
                             type="button"
                         >
-                            <Search />
+                            <Search className="size-5" />
                             Analyze
                         </button>
                     </div>
@@ -466,13 +616,13 @@ function DashboardView({
                 <div className="card">
                     <div className="card-header">
                         <div>
-                            <h3><b>Recent Community Activity</b></h3>
+                            <h3 className="font-josefin"><b>Recent Community Activity</b></h3>
                             <div className="muted small">
                                 Live-style sample records
                             </div>
                         </div>
                         <button
-                            className="btn btn-outline"
+                            className="inline-flex items-center gap-2 rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black"
                             onClick={() => showView('community')}
                             type="button"
                         >
@@ -487,7 +637,7 @@ function DashboardView({
                                 </span>
                                 <span className="tiny muted">12 min ago</span>
                             </div>
-                            <h4><b>Claim about a school suspension</b></h4>
+                            <h4 className="font-josefin"><b>Claim about a school suspension</b></h4>
                             <p>
                                 Official evidence has not yet been attached to
                                 the original post.
@@ -500,7 +650,7 @@ function DashboardView({
                                 </span>
                                 <span className="tiny muted">1 hr ago</span>
                             </div>
-                            <h4><b>Updated scholarship application schedule</b></h4>
+                            <h4 className="font-josefin"><b>Updated scholarship application schedule</b></h4>
                             <p>
                                 Supported by an official university announcement
                                 and registrar notice.
@@ -513,7 +663,7 @@ function DashboardView({
                                 </span>
                                 <span className="tiny muted">3 hrs ago</span>
                             </div>
-                            <h4><b>Viral image with inconsistent details</b></h4>
+                            <h4 className="font-josefin"><b>Viral image with inconsistent details</b></h4>
                             <p>
                                 AI signal detected; original-source tracing is
                                 recommended.
@@ -523,6 +673,23 @@ function DashboardView({
                 </div>
             </div>
         </section>
+    );
+}
+
+function DemoIcon({ className }: { className?: string }) {
+    return (
+        <svg
+            className={className}
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+        >
+            <path d="M20 3 3 13 11 14.5 12.5 22 20 3Z" />
+            <path d="M11 14.5 20 3" />
+        </svg>
     );
 }
 
@@ -1792,18 +1959,18 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                                 <Menu />
                             </button>
                             <div className="page-title">
-                                <h2>{heading}</h2>
+                                <h2 className="font-josefin">{heading}</h2>
                                 <p>{subheading}</p>
                             </div>
                         </div>
                         <div className="top-actions">
                             {role === 'student' && (
                                 <button
-                                    className="btn btn-outline prototype-label"
+                                    className="btn btn-outline prototype-label font-josefin"
                                     onClick={() => setModal('tour')}
                                     type="button"
                                 >
-                                    <Sparkles />
+                                    <DemoIcon />
                                     Demo Tour
                                 </button>
                             )}
@@ -1822,13 +1989,11 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                                     aria-hidden="true"
                                     className="stop-icon"
                                 />
-                                <span className="exit-role-label">
-                                    Exit View
-                                </span>
+                                <span className="exit-role-label font-josefin">Exit View</span>
                             </button>
                             <select
                                 aria-label="Preview role"
-                                className="role-select"
+                                className="role-select font-josefin"
                                 onChange={(event) =>
                                     enterRole(event.target.value as Role)
                                 }
@@ -1849,7 +2014,7 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                                 <Bell />
                                 <span className="dot" />
                             </button>
-                            <div className="avatar">JC</div>
+                            <div className="avatar font-josefin">JC</div>
                         </div>
                     </header>
                     <div className="content">
@@ -1857,6 +2022,7 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                             <DashboardView
                                 analyzeQuickClaim={analyzeQuickClaim}
                                 courseProgress={courseProgress}
+                                modules={modules}
                                 openLesson={openLesson}
                                 quickClaim={quickClaim}
                                 quickUrl={quickUrl}
