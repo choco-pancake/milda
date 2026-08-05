@@ -374,6 +374,10 @@ function DashboardView({
         };
     }, [modules]);
 
+    const today = new Date();
+    const currentDay = today.getDate();
+    const daysInMonth = 31;
+
     return (
         <section className="view active dashboard-view">
             <div className="relative overflow-hidden rounded-3xl bg-[#231f20] p-8 lg:p-10">
@@ -398,11 +402,11 @@ function DashboardView({
                             </div>
                         </div>
                         <button
-                            className="rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black"
-                            onClick={() => showView('learn')}
-                            type="button"
+                        className="mb-16 rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black cursor-pointer"
+                        onClick={() => showView('learn')}
+                        type="button"
                         >
-                            Continue Course
+                        Continue Course
                         </button>
                     </div>
 
@@ -531,33 +535,6 @@ function DashboardView({
                 </div>
             </div>
 
-            {/* ... rest of the DashboardView stays exactly the same (stats-grid, grid-2, etc.) */}
-            <div className="stats-grid">
-                <StatCard
-                    detail="↑ 42 this week"
-                    icon={Award}
-                    label="Trusted Score"
-                    value="824"
-                />
-                <StatCard
-                    detail="3 awaiting review"
-                    icon={Check}
-                    label="Verification Missions"
-                    value="18"
-                />
-                <StatCard
-                    detail="92% acceptance rate"
-                    icon={Link}
-                    label="Accepted Sources"
-                    value="27"
-                />
-                <StatCard
-                    detail="Quality contributor"
-                    icon={Users}
-                    label="Helpful Reviews"
-                    value="44"
-                />
-            </div>
             <div className="grid-2">
                 <div className="card">
                     <div className="card-header">
@@ -589,85 +566,73 @@ function DashboardView({
                         <Sparkles />
                         Load a demonstration claim
                     </button>
-                    <div className="relative mt-3">
-                        <div className="flex h-[60px] items-center overflow-hidden rounded-[95px] border border-[#9a9a9a] bg-white pl-6 pr-[150px]">
-                            <input
-                                className="h-full w-full bg-transparent font-josefin text-base text-[#231f20] placeholder:text-[#707070] focus:outline-none"
-                                onChange={(event) => setQuickUrl(event.target.value)}
-                                placeholder="https://example.com/source"
-                                type="url"
-                                value={quickUrl}
-                            />
-                        </div>
+                    <div className="relative mt-4">
+                        <input
+                            type="text"
+                            placeholder="Paste content to be reviewed here"
+                            className="h-[68px] w-full rounded-[999px] border border-[#9A9A9A] bg-white pl-7 pr-[150px] text-[15px] text-[#231F20] placeholder:text-[#707070] transition-colors focus:border-[#231F20] focus:outline-none"
+                        />
+
                         <button
-                            className="group absolute right-[6px] top-1/2 flex -translate-y-1/2 items-center gap-2 rounded-[66px] border border-[#9a9a9a] bg-[#231F20] px-5 py-3 font-josefin text-sm font-semibold text-[#FFF9F4] transition-colors duration-300 ease-in-out hover:border-transparent hover:bg-[#7ebdc2] hover:text-[#231F20]"
-                            onClick={analyzeQuickClaim}
                             type="button"
+                            className="group absolute right-[8px] top-1/2 flex -translate-y-1/2 items-center gap-2 rounded-full border border-[#9A9A9A] bg-[#231F20] px-6 py-3 transition-all duration-300 hover:border-transparent hover:bg-[#7EBDC2]"
                         >
-                            <Search className="size-5" />
-                            Analyze
+                            <Search className="size-5 text-[#FFF9F4] transition-colors duration-300 group-hover:text-[#231F20]" />
+                            <span className="font-semibold text-[#FFF9F4] transition-colors duration-300 group-hover:text-[#231F20]">
+                                Analyze
+                            </span>
                         </button>
                     </div>
-                    <p className="tiny muted">
+                    <p className="tiny muted mt-2">
                         AI guidance is advisory. Final status requires credible
                         evidence and moderation.
                     </p>
                 </div>
-                <div className="card">
-                    <div className="card-header">
-                        <div>
-                            <h3 className="font-josefin"><b>Recent Community Activity</b></h3>
-                            <div className="muted small">
-                                Live-style sample records
-                            </div>
+                <div className="calendar-card">
+                    <div className="calendar-widget">
+                        <div className="calendar-header">
+                            <h4>August 2026</h4>
                         </div>
-                        <button
-                            className="inline-flex items-center gap-2 rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black"
-                            onClick={() => showView('community')}
-                            type="button"
-                        >
-                            View hub
-                        </button>
-                    </div>
-                    <div className="feed">
-                        <div className="feed-item">
-                            <div className="feed-meta">
-                                <span className="tag tag-amber">
-                                    Needs Verification
-                                </span>
-                                <span className="tiny muted">12 min ago</span>
-                            </div>
-                            <h4 className="font-josefin"><b>Claim about a school suspension</b></h4>
-                            <p>
-                                Official evidence has not yet been attached to
-                                the original post.
-                            </p>
+
+                        <div className="calendar-days">
+                            <span>Sun</span>
+                            <span>Mon</span>
+                            <span>Tue</span>
+                            <span>Wed</span>
+                            <span>Thu</span>
+                            <span>Fri</span>
+                            <span>Sat</span>
                         </div>
-                        <div className="feed-item">
-                            <div className="feed-meta">
-                                <span className="tag tag-green">
-                                    Community Verified
-                                </span>
-                                <span className="tiny muted">1 hr ago</span>
-                            </div>
-                            <h4 className="font-josefin"><b>Updated scholarship application schedule</b></h4>
-                            <p>
-                                Supported by an official university announcement
-                                and registrar notice.
-                            </p>
-                        </div>
-                        <div className="feed-item">
-                            <div className="feed-meta">
-                                <span className="tag tag-purple">
-                                    Possible AI-Generated
-                                </span>
-                                <span className="tiny muted">3 hrs ago</span>
-                            </div>
-                            <h4 className="font-josefin"><b>Viral image with inconsistent details</b></h4>
-                            <p>
-                                AI signal detected; original-source tracing is
-                                recommended.
-                            </p>
+
+                        <div className="calendar-grid">
+                            {/* Previous month */}
+                            <span className="muted-day">26</span>
+                            <span className="muted-day">27</span>
+                            <span className="muted-day">28</span>
+                            <span className="muted-day">29</span>
+                            <span className="muted-day">30</span>
+                            <span className="muted-day">31</span>
+
+                            {/* August */}
+                            {Array.from({ length: daysInMonth }, (_, i) => {
+                                const day = i + 1;
+
+                                return (
+                                    <span
+                                        key={day}
+                                        className={day === currentDay ? "active-day" : ""}
+                                    >
+                                        {day}
+                                    </span>
+                                );
+                            })}
+
+                            {/* Next month */}
+                            <span className="muted-day">1</span>
+                            <span className="muted-day">2</span>
+                            <span className="muted-day">3</span>
+                            <span className="muted-day">4</span>
+                            <span className="muted-day">5</span>
                         </div>
                     </div>
                 </div>
@@ -714,84 +679,135 @@ function ModulesView({
         return progress > 0 ? 'progress' : 'locked';
     };
 
+    const statusLabel = (progress: number) => {
+        if (progress === 100) return 'Completed';
+        if (progress > 0) return 'Ongoing';
+        return 'Not Started';
+    };
+
     return (
         <section className="view active">
-            <div className="section-heading">
-                <div className="filter-row">
-                    {(
-                        [
-                            ['all', 'All'],
-                            ['completed', 'Completed'],
-                            ['progress', 'In progress'],
-                            ['locked', 'Locked'],
-                        ] as [ModuleFilter, string][]
-                    ).map(([filter, label]) => (
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
+                <div>
+                    {/* Header */}
+                    <div className="mb-8">
+                        <h1 className="mb-2 font-josefin text-4xl font-bold text-[#231f20]">
+                            MILDA Course Modules
+                        </h1>
+                        <p className="mb-6 max-w-xl font-josefin text-sm leading-relaxed text-[#707070]">
+                            Complete the structured course and Digital
+                            Verification Portfolio to earn the contributor
+                            badge.
+                        </p>
                         <button
-                            className={`filter-chip ${moduleFilter === filter ? 'active' : ''}`}
-                            key={filter}
-                            onClick={() => setModuleFilter(filter)}
+                            className="mb-2 rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black cursor-pointer"
                             type="button"
                         >
-                            {label}
+                            Get Started
                         </button>
-                    ))}
-                </div>
-            </div>
-            <div className="module-grid">
-                {modules.map((module, index) => {
-                    const state = moduleState(module.progress);
+                    </div>
 
-                    if (moduleFilter !== 'all' && state !== moduleFilter) {
-                        return null;
-                    }
+                    <div className="mb-8 flex items-center gap-4">
+                        {(
+                            [
+                                ['all', 'All'],
+                                ['progress', 'Ongoing'],
+                                ['completed', 'Completed'],
+                                ['locked', 'Not Started'],
+                            ] as [ModuleFilter, string][]
+                        ).map(([filter, label], index) => {
+                            const isActive = moduleFilter === filter;
 
-                    const label =
-                        state === 'completed'
-                            ? 'Completed'
-                            : state === 'progress'
-                              ? `${module.progress}% complete`
-                              : 'Locked';
-                    const action =
-                        state === 'completed'
-                            ? 'Review'
-                            : state === 'progress'
-                              ? 'Continue'
-                              : 'Preview';
-                    const tagClass =
-                        state === 'completed'
-                            ? 'tag-green'
-                            : state === 'progress'
-                              ? 'tag-blue'
-                              : 'tag-amber';
+                            return (
+                                <div className="flex items-center gap-4" key={filter}>
+                                    {index > 0 && (
+                                        <span className="h-4 w-px bg-[#d8cfc4]" aria-hidden="true" />
+                                    )}
+                                    <button
+                                        className={`group flex flex-col items-center gap-1.5 font-josefin text-sm font-semibold transition-colors duration-200 cursor-pointer ${
+                                            isActive
+                                                ? 'text-[#7EBDC2]'
+                                                : 'text-[#231f20] hover:text-[#7EBDC2]'
+                                        }`}
+                                        onClick={() => setModuleFilter(filter)}
+                                        type="button"
+                                    >
+                                        {label}
+                                        <span
+                                            className={`h-[2px] w-5 rounded-full bg-[#7EBDC2] transition-opacity duration-200 ${
+                                                isActive
+                                                    ? 'opacity-100'
+                                                    : 'opacity-0 group-hover:opacity-100'
+                                            }`}
+                                        />
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
 
-                    return (
-                        <article
-                            className="card module-card"
-                            key={module.title}
-                        >
-                            <div className="module-number">{index + 1}</div>
-                            <h3><b>{module.title}</b></h3>
-                            <p>{module.description}</p>
-                            <div className="linear-progress">
-                                <span
-                                    style={{ width: `${module.progress}%` }}
-                                />
-                            </div>
-                            <div className="module-footer">
-                                <span className={`tag ${tagClass}`}>
-                                    {label}
-                                </span>
+                    {/* Module grid */}
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                        {modules.map((module, index) => {
+                            const state = moduleState(module.progress);
+
+                            if (moduleFilter !== 'all' && state !== moduleFilter) {
+                                return null;
+                            }
+
+                            return (
                                 <button
-                                    className="btn btn-outline"
+                                    className="rounded-2xl bg-[#efe6dd] p-6 text-left transition-colors duration-300 hover:bg-[#7ebdc2] cursor-pointer"
+                                    key={module.title}
                                     onClick={() => openLesson(index)}
                                     type="button"
                                 >
-                                    {action}
+                                    <div className="mb-8 font-josefin text-5xl font-bold text-[#231f20]">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </div>
+                                    <div className="mb-6 min-h-[3.5rem] font-josefin text-lg font-semibold leading-snug text-[#231f20]">
+                                        {module.title}
+                                    </div>
+                                    <div className="mb-2 flex items-center justify-between text-xs text-[#707070]">
+                                        <span>{statusLabel(module.progress)}</span>
+                                        <span>{module.progress}%</span>
+                                    </div>
+                                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#d8cfc4]">
+                                        <div
+                                            className="h-full rounded-full bg-[#231f20]"
+                                            style={{ width: `${module.progress}%` }}
+                                        />
+                                    </div>
                                 </button>
-                            </div>
-                        </article>
-                    );
-                })}
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Sidebar */}
+                <div className="lg:border-l lg:border-[#e5ddd3] lg:pl-8">
+                    <div className="mb-8">
+                        <h3 className="mb-1 font-josefin text-lg font-bold text-[#231f20]">
+                            Achievements
+                        </h3>
+                        <p className="mb-4 font-josefin text-xs leading-relaxed text-[#707070]">
+                            Badges you can earn for completing this course.
+                        </p>
+                        <div className="h-12 w-12 rounded-xl bg-[#d8cfc4]" />
+                    </div>
+
+                    <div className="border-t border-[#e5ddd3] pt-6">
+                        <h3 className="mb-4 font-josefin text-lg font-bold text-[#231f20]">
+                            Instructor
+                        </h3>
+                        <div className="flex items-center gap-3">
+                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-[#d8cfc4]" />
+                            <span className="font-josefin text-sm text-[#231f20]">
+                                Instructor 1
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
     );
