@@ -468,28 +468,34 @@ svg { width: 20px; height: 20px; }
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6' fill='none'><path d='M1 5L5 1L9 5' stroke='%2366798a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/></svg>");
 }
 
-/* Avatar (JC) */
 .avatar {
   width: 44px;
   height: 44px;
   border-radius: 50%;
+  overflow: hidden;
 
   display: grid;
   place-items: center;
 
-  font-family: "Lato", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-
-  color: #ffffff;
-  background: #7EBDC2;          /* navy */
-
-  border: 2px solid #ffffff;    /* white border */
+  background: #7EBDC2;
+  border: 2px solid #ffffff;
 
   /* light outer ring */
   box-shadow: 0 0 0 4px #E7EEF6;
 
   transition: all .25s ease;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar:hover {
+  cursor: pointer;
+  box-shadow: 0 0 0 1px #7EBDC2;
 }
 
 .avatar:hover {

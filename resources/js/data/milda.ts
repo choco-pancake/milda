@@ -207,7 +207,7 @@ export const courseModules: CourseModule[] = [
         title: 'Misinformation, Disinformation, and Malinformation',
         description:
             'Identify different forms of information disorder in digital contexts.',
-        progress: 90,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -346,7 +346,7 @@ export const courseModules: CourseModule[] = [
         title: 'Information Disorder and Online Sharing Behavior',
         description:
             'Understand how misleading content spreads and why people share it.',
-        progress: 90,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -425,7 +425,7 @@ export const courseModules: CourseModule[] = [
         title: 'Evaluating Online Sources and Claims',
         description:
             'Apply credibility indicators and source-evaluation criteria.',
-        progress: 90,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -541,7 +541,7 @@ export const courseModules: CourseModule[] = [
         title: 'Fact-Checking and Verification Techniques',
         description:
             'Practice source triangulation, reverse image search, and evidence checking.',
-        progress: 90,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -645,7 +645,7 @@ export const courseModules: CourseModule[] = [
         title: 'Community Verification and Reporting',
         description:
             'Report suspicious content and contribute trusted references responsibly.',
-        progress: 90,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -763,7 +763,7 @@ export const courseModules: CourseModule[] = [
         title: 'AI-Generated Content and AI Hallucinations',
         description:
             'Recognize AI limitations, hallucinations, and possible synthetic content.',
-        progress: 60,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -942,7 +942,7 @@ export const courseModules: CourseModule[] = [
         title: 'Deepfakes and Manipulated Media',
         description:
             'Analyze synthetic media, visual artifacts, and edited images or videos.',
-        progress: 25,
+        progress: 0,
         objectives: [
             {
                 title: 'Understand',
@@ -1447,7 +1447,7 @@ export const communityItems: CommunityItem[] = [
             {
                 platform: 'tiktok',
                 label: 'TikTok Video Clip',
-                url: 'tiktok.com/@cityupdates/video/7391829012',
+                url: 'tiktok.com/@cityupdates/video/739182012',
             },
         ],
     },

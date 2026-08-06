@@ -8,6 +8,7 @@ import {
     Check,
     ChevronLeft,
     ChevronRight,
+    ChevronDown,
     CircleCheck,
     CircleHelp,
     FileText,
@@ -164,13 +165,20 @@ function StatCard({
     detail: string;
 }) {
     return (
-        <div className="card stat">
-            <div className="stat-icon">
-                <Icon />
+        <div className="rounded-3xl bg-white p-6">
+            <div
+                className="mb-4 flex h-11 w-11 items-center justify-center rounded-full text-[#231F20]"
+                style={{ backgroundColor: '#EBDCCD' }}
+            >
+                <Icon className="size-5" />
             </div>
-            <div className="stat-label">{label}</div>
-            <div className="stat-value">{value}</div>
-            <div className="stat-delta">{detail}</div>
+            <div className="font-lato text-xs font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                {label}
+            </div>
+            <div className="mt-1 font-josefin text-3xl font-bold text-[#231F20]">
+                {value}
+            </div>
+            <div className="mt-1 font-lato text-xs text-[#7EBDC2]">{detail}</div>
         </div>
     );
 }
@@ -229,70 +237,94 @@ function IntroScreen({
     ];
 
     return (
-        <section className="intro-screen">
+        <section
+            className="intro-screen"
+            style={{ backgroundColor: '#231F20', minHeight: '100vh', height: 'auto', overflowY: 'auto' }}
+        >
             <div className="intro-card">
                 <div className="intro-copy">
-                    <div className="intro-logo">
+                    <div className="intro-logo mb-8">
                         <img
                             src="/images/milda.png"
                             alt="MILDA"
                             className="intro-logo-image"
                         />
-                        <div className="intro-team">
+                        <div className="mt-2 font-lato text-sm text-white/60">
                             Team QuantumX · UNESCO Youth Hackathon 2026
                         </div>
                     </div>
-                    <h1><b>
+                    <h1 className="font-josefin text-5xl font-bold leading-tight text-[#FFF9F4]">
                         Learn to verify.
                         <br />
                         Build digital trust.
-                    </b></h1>
-                    <p>
+                    </h1>
+                    <p className="mt-6 max-w-lg font-lato text-base leading-relaxed text-white/70">
                         MILDA is a course-centered Media and Information
                         Literacy ecosystem that combines structured learning,
                         AI-assisted guidance, and evidence-based community
                         verification.
                     </p>
-                    <div className="intro-tags">
-                        <span className="intro-tag">Course Program</span>
-                        <span className="intro-tag">Browser Extension</span>
-                        <span className="intro-tag">Web App</span>
-                        <span className="intro-tag">Mobile App</span>
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        {['Course Program', 'Browser Extension', 'Web App', 'Mobile App'].map(
+                            (label) => (
+                                <span
+                                    className="rounded-full px-4 py-2 font-lato text-sm font-semibold text-[#231F20]"
+                                    key={label}
+                                    style={{ backgroundColor: '#EBDCCD' }}
+                                >
+                                    {label}
+                                </span>
+                            ),
+                        )}
                     </div>
                 </div>
-                <div className="role-panel">
-                    <h2><b>Explore the prototype</b></h2>
-                    <p>Select a role to preview the MILDA experience.</p>
-                    <div className="role-grid">
+                <div className="role-panel rounded-3xl bg-white p-8">
+                    <h2 className="font-josefin text-2xl font-bold text-[#231F20]">
+                        Explore the prototype
+                    </h2>
+                    <p className="mt-1 font-lato text-sm text-[#707070]">
+                        Select a role to preview the MILDA experience.
+                    </p>
+                    <div className="mt-6 flex flex-col gap-3">
                         {roles.map(
                             ({ role, title, description, icon: RoleIcon }) => (
                                 <button
-                                    className="role-card"
+                                    className="group flex items-center gap-4 rounded-2xl border border-[#E5DDD3] bg-white p-4 text-left transition-colors duration-200 hover:bg-[#F3F0EC]"
                                     key={role}
                                     onClick={() => onEnter(role)}
                                     type="button"
                                 >
-                                    <div className="role-icon">
-                                        <RoleIcon />
+                                    <div
+                                        className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-[#231F20]"
+                                        style={{ backgroundColor: '#EBDCCD' }}
+                                    >
+                                        <RoleIcon className="size-5" />
                                     </div>
-                                    <div>
-                                        <strong>{title}</strong>
-                                        <span>{description}</span>
+                                    <div className="flex-1">
+                                        <strong className="block font-josefin text-base font-bold text-[#231F20]">
+                                            {title}
+                                        </strong>
+                                        <span className="font-lato text-sm text-[#707070]">
+                                            {description}
+                                        </span>
                                     </div>
-                                    <div className="role-arrow">→</div>
+                                    <span className="font-lato text-lg text-[#9A9A9A] transition-transform duration-200 group-hover:translate-x-1">
+                                        →
+                                    </span>
                                 </button>
                             ),
                         )}
                     </div>
-                    <a
-                        className="btn btn-dark download-link intro-download"
-                        download
-                        href={syllabusUrl}
-                    >
-                        <FileText />
-                        Download MILDA Course Syllabus
-                    </a>
-                    <div className="intro-note">
+                    
+                        <a className="mt-6 flex items-center justify-center gap-2 rounded-full px-6 py-3 font-lato text-sm font-semibold transition-colors duration-200 hover:opacity-90"
+                            download
+                            href={syllabusUrl}
+                            style={{ backgroundColor: '#231F20', color: '#FFF9F4' }}
+                        >
+                            <FileText className="size-4" style={{ color: '#FFF9F4' }} />
+                            Download MILDA Course Syllabus
+                        </a>
+                    <div className="mt-4 text-center font-lato text-xs text-[#9A9A9A]">
                         High-fidelity clickable prototype · Sample data only
                     </div>
                 </div>
@@ -685,6 +717,27 @@ function ModulesView({
         return 'Not Started';
     };
 
+    const resumeModule = () => {
+        // First priority: a module you've started but not finished
+        const inProgressIndex = modules.findIndex(
+            (module) => module.progress > 0 && module.progress < 100,
+        );
+        if (inProgressIndex !== -1) {
+            openLesson(inProgressIndex);
+            return;
+        }
+
+        // Otherwise: the first module you haven't started yet
+        const notStartedIndex = modules.findIndex((module) => module.progress === 0);
+        if (notStartedIndex !== -1) {
+            openLesson(notStartedIndex);
+            return;
+        }
+
+        // Everything is complete — just reopen the last module
+        openLesson(modules.length - 1);
+    };
+
     return (
         <section className="view active">
             <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_300px]">
@@ -701,9 +754,10 @@ function ModulesView({
                         </p>
                         <button
                             className="mb-2 rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black cursor-pointer"
+                            onClick={resumeModule}
                             type="button"
                         >
-                            Get Started
+                            Continue
                         </button>
                     </div>
 
@@ -785,28 +839,104 @@ function ModulesView({
                 </div>
 
                 {/* Sidebar */}
-                <div className="lg:border-l lg:border-[#e5ddd3] lg:pl-8">
-                    <div className="mb-8">
-                        <h3 className="mb-1 font-josefin text-lg font-bold text-[#231f20]">
-                            Achievements
+                <div className="lg:border-l lg:border-[#E5DDD3] lg:pl-8">
+
+                    {/* About this Course */}
+                    <div className="pb-8">
+                        <h3 className="mb-2 whitespace-nowrap font-josefin text-[32px] font-bold leading-none text-[#231F20]">
+                            About this Course
                         </h3>
-                        <p className="mb-4 font-josefin text-xs leading-relaxed text-[#707070]">
-                            Badges you can earn for completing this course.
-                        </p>
-                        <div className="h-12 w-12 rounded-xl bg-[#d8cfc4]" />
+
+                        <div className="max-w-[320px] space-y-4 font-josefin text-[15px] leading-6 text-[#4B4B4B]">
+                            <p className="text-justify indent-8">
+                                This course introduces students to Media and Information Literacy in the context of the digital age. It covers media literacy, information literacy, misinformation, disinformation, malinformation, source evaluation, fact-checking, AI-generated content, deepfakes, manipulated media, digital citizenship, ethical information use, and community-based verification.
+                            </p>
+
+                            <p className="text-justify indent-8">
+                                This course serves as a pilot implementation of the MILDA
+                                learning platform, introducing learners to Media and
+                                Information Literacy concepts through interactive lessons,
+                                quizzes, practical verification activities, and achievement
+                                badges.
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="border-t border-[#e5ddd3] pt-6">
-                        <h3 className="mb-4 font-josefin text-lg font-bold text-[#231f20]">
+                    <div className="border-t border-[#E5DDD3]"></div>
+
+                    {/* Achievements */}
+                    <div className="py-8">
+                        <h3 className="mb-2 font-josefin text-[32px] font-bold leading-none text-[#231F20]">
+                            Achievements
+                        </h3>
+
+                        <p className="mb-8 max-w-[220px] font-josefin text-[15px] leading-6 text-[#4B4B4B]">
+                            Badges you can earn for completing this course.
+                        </p>
+
+                        <div className="grid grid-cols-4 gap-2 w-fit">
+                        <img
+                            src="/images/1.png"
+                            alt="Badge 1"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                        <img
+                            src="/images/2.png"
+                            alt="Badge 2"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                        <img
+                            src="/images/3.png"
+                            alt="Badge 3"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                        <img
+                            src="/images/4.png"
+                            alt="Badge 4"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+
+                        <img
+                            src="/images/5.png"
+                            alt="Badge 5"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                        <img
+                            src="/images/6.png"
+                            alt="Badge 6"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                        <img
+                            src="/images/7.png"
+                            alt="Badge 7"
+                            className="h-[72px] w-[72px] object-contain transition-transform duration-300 hover:scale-110"
+                        />
+                    </div>
+                    </div>
+
+                    <div className="border-t border-[#E5DDD3]"></div>
+
+                    {/* Instructor */}
+                    <div className="pt-8">
+                        <h3 className="mb-8 font-josefin text-[32px] font-bold leading-none text-[#231F20]">
                             Instructor
                         </h3>
-                        <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-[#d8cfc4]" />
-                            <span className="font-josefin text-sm text-[#231f20]">
-                                Instructor 1
+
+                        <div className="flex items-center gap-4">
+                            <div className="h-14 w-14 overflow-hidden rounded-full">
+                                <img
+                                    src="/images/instructor.png"
+                                    alt="Jacob Jones"
+                                    className="h-full w-full object-cover"
+                                />
+                            </div>
+
+                            <span className="font-josefin text-[18px] font-medium text-[#231F20]">
+                                Jacob Jones
                             </span>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -869,8 +999,10 @@ function VerificationView({
         <section className="view active">
             <div className="section-heading">
                 <div>
-                    <h2>Verify Digital Content</h2>
-                    <p>
+                    <h1 className="mb-2 font-josefin text-4xl font-bold text-[#231f20]">
+                        Verify Digital Content
+                    </h1>
+                    <p className="max-w-xl font-josefin text-sm leading-relaxed text-[#707070]">
                         Use AI-assisted guidance, source evaluation, and
                         moderated community review.
                     </p>
@@ -879,35 +1011,52 @@ function VerificationView({
             </div>
             <div className="verify-layout">
                 <div className="card">
-                    <div className="tab-row">
+                    <div className="mb-6 flex items-center gap-6 border-b border-[#E5DDD3]">
                         {(
                             [
                                 ['text', 'Text / Claim'],
                                 ['url', 'URL'],
                                 ['image', 'Image'],
                             ] as [VerifyTab, string][]
-                        ).map(([tabName, label]) => (
-                            <button
-                                className={`tab ${tab === tabName ? 'active' : ''}`}
-                                key={tabName}
-                                onClick={() => setTab(tabName)}
-                                type="button"
-                            >
-                                {label}
-                            </button>
-                        ))}
+                        ).map(([tabName, label]) => {
+                            const isActive = tab === tabName;
+
+                            return (
+                                <button
+                                    className={`group flex flex-col items-center gap-2 pb-3 font-josefin text-sm font-semibold transition-colors duration-200 cursor-pointer ${
+                                        isActive
+                                            ? 'text-[#231F20]'
+                                            : 'text-[#9A9A9A] hover:text-[#231F20]'
+                                    }`}
+                                    key={tabName}
+                                    onClick={() => setTab(tabName)}
+                                    type="button"
+                                >
+                                    {label}
+                                    <span
+                                        className={`h-[2px] w-full rounded-full bg-[#7EBDC2] transition-opacity duration-200 ${
+                                            isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'
+                                        }`}
+                                    />
+                                </button>
+                            );
+                        })}
                     </div>
+
                     {tab === 'text' && (
                         <div className="verify-tab">
-                            <label htmlFor="verifyClaim">
+                            <label
+                                className="mb-2 block font-josefin text-sm font-semibold text-[#231F20]"
+                                htmlFor="verifyClaim"
+                            >
                                 Claim or caption
                             </label>
                             <textarea
+                                className="w-full rounded-2xl border border-transparent bg-[#F3F0EC] p-4 font-josefin text-[15px] text-[#231F20] placeholder:text-[#707070] transition-colors focus:border-[#7EBDC2] focus:outline-none"
                                 id="verifyClaim"
-                                onChange={(event) =>
-                                    setVerifyClaim(event.target.value)
-                                }
+                                onChange={(event) => setVerifyClaim(event.target.value)}
                                 placeholder="Paste the claim, caption, or text you want to examine..."
+                                rows={5}
                                 value={verifyClaim}
                             />
                             <button
@@ -922,26 +1071,33 @@ function VerificationView({
                     )}
                     {tab === 'url' && (
                         <div className="verify-tab">
-                            <label htmlFor="verifyUrl">
+                            <label
+                                className="mb-2 block font-josefin text-sm font-semibold text-[#231F20]"
+                                htmlFor="verifyUrl"
+                            >
                                 Article or post URL
                             </label>
                             <input
+                                className="w-full rounded-full border border-transparent bg-[#F3F0EC] px-5 py-4 font-josefin text-[15px] text-[#231F20] placeholder:text-[#707070] transition-colors focus:border-[#7EBDC2] focus:outline-none"
                                 id="verifyUrl"
-                                onChange={(event) =>
-                                    setVerifyUrl(event.target.value)
-                                }
+                                onChange={(event) => setVerifyUrl(event.target.value)}
                                 placeholder="https://..."
                                 type="url"
                                 value={verifyUrl}
                             />
                             <div className="field-spacer" />
-                            <label htmlFor="urlContext">Optional context</label>
+                            <label
+                                className="mb-2 block font-josefin text-sm font-semibold text-[#231F20]"
+                                htmlFor="urlContext"
+                            >
+                                Optional context
+                            </label>
                             <textarea
+                                className="w-full rounded-2xl border border-transparent bg-[#F3F0EC] p-4 font-josefin text-[15px] text-[#231F20] placeholder:text-[#707070] transition-colors focus:border-[#7EBDC2] focus:outline-none"
                                 id="urlContext"
-                                onChange={(event) =>
-                                    setUrlContext(event.target.value)
-                                }
+                                onChange={(event) => setUrlContext(event.target.value)}
                                 placeholder="What part of the page should be checked?"
+                                rows={4}
                                 value={urlContext}
                             />
                         </div>
@@ -958,17 +1114,18 @@ function VerificationView({
                             </div>
                         </div>
                     )}
-                    <div className="form-actions">
+
+                    <div className="mt-6 flex items-center gap-3">
                         <button
-                            className="btn btn-dark"
+                            className="group flex items-center gap-2 rounded-full border border-transparent bg-[#231F20] px-6 py-3 font-josefin text-base font-semibold text-[#FFF9F4] transition-all duration-300 hover:bg-[#7EBDC2] hover:text-[#231F20] cursor-pointer"
                             onClick={runAnalysis}
                             type="button"
                         >
-                            <Search />
+                            <Search className="size-5" />
                             Run Guided Analysis
                         </button>
                         <button
-                            className="btn btn-outline"
+                            className="rounded-full border border-[#9A9A9A] bg-transparent px-6 py-3 font-josefin text-base font-semibold text-[#231F20] transition-all duration-300 hover:border-[#231F20] hover:bg-[#efe6dd] cursor-pointer"
                             onClick={clearAnalysis}
                             type="button"
                         >
@@ -976,15 +1133,23 @@ function VerificationView({
                         </button>
                     </div>
                 </div>
-                <div className="card">
-                    <h3><b>Five-step verification process</b></h3>
-                    <div className="workflow">
+                <div className="card" style={{ backgroundColor: '#EBDCCD' }}>
+                    <h3 className="mb-6 font-josefin text-lg font-bold text-[#231F20]">
+                        Five-step verification process
+                    </h3>
+                    <div className="flex flex-col gap-5">
                         {workflow.map(([title, description], index) => (
-                            <div className="workflow-step" key={title}>
-                                <div className="step-n">{index + 1}</div>
+                            <div className="flex items-start gap-4" key={title}>
+                                <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[#231F20] font-josefin text-sm font-bold text-[#FFF9F4]">
+                                    {index + 1}
+                                </div>
                                 <div>
-                                    <strong>{title}</strong>
-                                    <p>{description}</p>
+                                    <strong className="font-josefin text-[15px] font-semibold text-[#231F20]">
+                                        {title}
+                                    </strong>
+                                    <p className="font-josefin text-sm leading-relaxed text-[#707070]">
+                                        {description}
+                                    </p>
                                 </div>
                             </div>
                         ))}
@@ -1111,7 +1276,7 @@ function CommunityView({
     vote,
     toast,
     openSubmitClaim,
-    openAddSource, // add this
+    openAddSource,
 }: {
     items: CommunityItem[];
     filter: CommunityFilter;
@@ -1120,13 +1285,38 @@ function CommunityView({
     vote: (itemIndex: number, voteIndex: number) => void;
     toast: (message: string) => void;
     openSubmitClaim: () => void;
-    openAddSource: (itemIndex: number) => void; // add this
+    openAddSource: (itemIndex: number) => void;
 }) {
+    const [expandedSources, setExpandedSources] = useState<Record<number, boolean>>({});
+
+    const toggleSources = (itemIndex: number) => {
+        setExpandedSources((current) => ({
+            ...current,
+            [itemIndex]: !current[itemIndex],
+        }));
+    };
+
+    const sourcesWrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                sourcesWrapperRef.current &&
+                !sourcesWrapperRef.current.contains(event.target as Node)
+            ) {
+                setExpandedSources({});
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
     return (
         <section className="view active community-view">
             <div className="section-heading">
                 <button
-                    className="btn btn-dark"
+                    className="rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black cursor-pointer"
                     onClick={openSubmitClaim}
                     type="button"
                 >
@@ -1160,68 +1350,120 @@ function CommunityView({
                     }
 
                     return (
-                        <article className="verify-card" key={item.title}>
-                            <div className="verify-card-header">
-                                <span className={`tag ${item.tagClass}`}>
-                                    {item.tag}
-                                </span>
-                                <span className="tiny muted">{item.reports}</span>
-                            </div>
-                            <h3 className="verify-card-title">{item.title}</h3>
-                            <p className="verify-card-text">{item.text}</p>
-                            <div className={`verify-card-note verify-card-note-${item.status}`}>{item.note}</div>
-                            <div className="verify-card-votes">
-                                {[
-                                    { label: 'Reliable', icon: CircleCheck, colorClass: 'verify-vote-reliable' },
-                                    { label: 'Needs Review', icon: CircleHelp, colorClass: 'verify-vote-review' },
-                                    { label: 'Misleading', icon: TriangleAlert, colorClass: 'verify-vote-misleading' },
-                                ].map(({ label, icon: VoteIcon, colorClass }, voteIndex) => {
-                                    const isSelected = selectedVotes[index] === voteIndex;
+                        <article
+                        className="flex flex-col gap-4 rounded-3xl bg-white p-6"
+                        key={item.title}
+                    >
+                        <div className="flex items-center justify-between">
+                            <span className={`tag ${item.tagClass}`}>{item.tag}</span>
+                            <span className="font-lato text-xs text-[#9A9A9A]">{item.reports}</span>
+                        </div>
 
-                                    return (
-                                        <button
-                                            aria-label={label}
-                                            className={`verify-vote-btn ${colorClass} ${isSelected ? 'selected' : ''}`}
-                                            key={label}
-                                            onClick={() => vote(index, voteIndex)}
-                                            type="button"
-                                        >
-                                            <VoteIcon className={`verify-vote-icon verify-vote-icon-${colorClass}`} />
-                                            <strong>{item.votes[voteIndex]}</strong>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                            <div className="verify-card-links-header">
-                                <span>
-                                    🔗 REFERENCED SOCIAL LINKS ({item.links.length})
+                        <div>
+                            <h3 className="mb-1 font-josefin text-lg font-bold leading-snug text-[#231F20]">
+                                {item.title}
+                            </h3>
+                            <p className="font-lato text-sm leading-relaxed text-[#707070]">
+                                {item.text}
+                            </p>
+                        </div>
+
+                        <div className="rounded-2xl bg-[#F3F0EC] p-4 font-lato text-[13px] leading-relaxed text-[#5A5A5A]">
+                            {item.note}
+                        </div>
+
+                        <div className="flex items-center justify-start gap-4">
+                            {[
+                                { label: 'Reliable', icon: CircleCheck, color: '#16A34A' },
+                                { label: 'Needs Review', icon: CircleHelp, color: '#D97706' },
+                                { label: 'Misleading', icon: TriangleAlert, color: '#DC2626' },
+                            ].map(({ label, icon: VoteIcon, color }, voteIndex) => {
+                                const isSelected = selectedVotes[index] === voteIndex;
+
+                                return (
+                                    <button
+                                        aria-label={label}
+                                        className={`flex items-center gap-1 bg-transparent border-none p-0 font-lato text-xs font-semibold transition-transform duration-200 cursor-pointer hover:scale-105 ${
+                                            isSelected ? 'opacity-100' : 'opacity-70 hover:opacity-100'
+                                        }`}
+                                        key={label}
+                                        onClick={() => vote(index, voteIndex)}
+                                        style={{ color }}
+                                        type="button"
+                                    >
+                                        <VoteIcon className="size-4" strokeWidth={isSelected ? 2.5 : 2} />
+                                        <strong>{item.votes[voteIndex]}</strong>
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        <div
+                            className="relative border-t border-[#E5DDD3] pt-4"
+                            ref={expandedSources[index] ? sourcesWrapperRef : undefined}
+                        >
+                            <div className="flex items-center justify-between">
+                                <span className="font-lato text-[12px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                    🔗 Referenced Sources ({item.links.length})
                                 </span>
                                 <button
-                                    className="verify-add-source"
-                                    onClick={() => openAddSource(index)}
+                                    className="flex items-center gap-2 rounded-full border border-[#7EBDC2] bg-white px-4 py-1.5 font-lato text-[7px] font-semibold text-[#231F20] transition-colors duration-200 hover:bg-[#F3F0EC] cursor-pointer"
+                                    onClick={() => toggleSources(index)}
                                     type="button"
                                 >
-                                    + Add Source
+                                    See sources
+                                    <ChevronDown
+                                        className={`size-4 text-[#231F20] transition-transform duration-200 ${
+                                            expandedSources[index] ? 'rotate-180' : ''
+                                        }`}
+                                    />
                                 </button>
                             </div>
-                            {item.links.map((link) => (
-                                <div className="verify-card-link" key={link.url}>
-                                    <span className={`verify-link-icon verify-link-icon-${link.platform}`}>
-                                        {link.platform === 'facebook' && <FacebookIcon />}
-                                        {link.platform === 'instagram' && <InstagramIcon />}
-                                        {link.platform === 'twitter' && <XIcon />}
-                                        {link.platform === 'tiktok' && <TikTokIcon />}
-                                        {link.platform === 'youtube' && <YouTubeIcon />} {/* add this */}
-                                        {link.platform === 'web' && '🌐'}
-                                    </span>
-                                    <div className="verify-link-info">
-                                        <strong>{link.label}</strong>
-                                        <span>{link.url}</span>
+
+                            {expandedSources[index] && (
+                                <div className="absolute right-0 top-full z-20 mt-2 w-[320px] rounded-2xl border border-[#E5DDD3] bg-white p-4 shadow-xl">
+                                    <div className="mb-3 flex items-center justify-between">
+                                        <span className="font-lato text-[10px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                            Sources
+                                        </span>
+                                        <button
+                                            className="font-lato text-[10px] font-semibold text-[#231F20] transition-colors duration-200 hover:text-[#7EBDC2] cursor-pointer"
+                                            onClick={() => openAddSource(index)}
+                                            type="button"
+                                        >
+                                            + Add Source
+                                        </button>
                                     </div>
-                                    <span className="verify-link-actions">⧉ ↗</span>
+                                    <div className="flex flex-col gap-2">
+                                        {item.links.map((link) => (
+                                            <div
+                                                className="flex items-center gap-3 rounded-xl bg-[#F3F0EC] p-3 transition-colors duration-200 hover:bg-[#EBDCCD]"
+                                                key={link.url}
+                                            >
+                                                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-white text-[#231F20]">
+                                                    {link.platform === 'facebook' && <FacebookIcon />}
+                                                    {link.platform === 'instagram' && <InstagramIcon />}
+                                                    {link.platform === 'twitter' && <XIcon />}
+                                                    {link.platform === 'tiktok' && <TikTokIcon />}
+                                                    {link.platform === 'youtube' && <YouTubeIcon />}
+                                                    {link.platform === 'web' && '🌐'}
+                                                </span>
+                                                <div className="min-w-0 flex-1">
+                                                    <strong className="block font-lato text-sm font-semibold text-[#231F20]">
+                                                        {link.label}
+                                                    </strong>
+                                                    <span className="block truncate font-lato text-xs text-[#9A9A9A]">
+                                                        {link.url}
+                                                    </span>
+                                                </div>
+                                                <span className="flex-shrink-0 font-lato text-xs text-[#9A9A9A]">⧉ ↗</span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            ))}
-                        </article>
+                            )}
+                        </div>
+                    </article>
                     );
                 })}
             </div>
@@ -1241,49 +1483,78 @@ function LeaderboardView({ openPolicy }: { openPolicy: () => void }) {
     return (
         <section className="view active">
             <div className="grid-2">
-                <div className="card">
-                    <div className="card-header">
+                <div className="rounded-3xl p-6" style={{ backgroundColor: '#EBDCCD' }}>
+                    <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h2><b>Quality-based Leaderboard</b></h2>
-                            <div className="small muted">
-                                Scores reward accepted evidence, helpful
-                                reviews, and responsible participation—not
-                                report volume alone.
-                            </div>
+                            <h2 className="font-josefin text-xl font-bold text-[#231F20]">
+                                Quality-based Leaderboard
+                            </h2>
+                            <p className="mt-1 max-w-md font-lato text-sm leading-relaxed text-[#707070]">
+                                Scores reward accepted evidence, helpful reviews, and
+                                responsible participation—not report volume alone.
+                            </p>
                         </div>
-                        <select
-                            aria-label="Leaderboard period"
-                            className="role-select leaderboard-period"
-                        >
-                            <option>This Semester</option>
-                            <option>This Month</option>
-                        </select>
+                        <div className="relative">
+                            <select
+                                aria-label="Leaderboard period"
+                                className="appearance-none rounded-full border border-[#7EBDC2] bg-white px-5 py-2.5 pr-10 font-lato text-sm font-semibold text-[#231F20] transition-colors duration-200 hover:bg-[#F3F0EC] focus:outline-none"
+                            >
+                                <option>This Semester</option>
+                                <option>This Month</option>
+                            </select>
+                            <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-[#231F20]" />
+                        </div>
                     </div>
-                    <div className="leaderboard-wrap">
-                        <table>
+
+                    <div className="overflow-hidden rounded-2xl border border-[#E5DDD3]">
+                        <table className="w-full border-collapse">
                             <thead>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Contributor</th>
-                                    <th>Recognition</th>
-                                    <th>Evidence Quality</th>
-                                    <th>Trusted Score</th>
+                                <tr className="bg-[#EFE6DD]">
+                                    <th className="px-5 py-3 text-left font-lato text-[11px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                        Rank
+                                    </th>
+                                    <th className="px-5 py-3 text-left font-lato text-[11px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                        Contributor
+                                    </th>
+                                    <th className="px-5 py-3 text-left font-lato text-[11px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                        Recognition
+                                    </th>
+                                    <th className="px-5 py-3 text-left font-lato text-[11px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                        Evidence Quality
+                                    </th>
+                                    <th className="px-5 py-3 text-left font-lato text-[11px] font-semibold uppercase tracking-wide text-[#9A9A9A]">
+                                        Trusted Score
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {rows.map((row) => (
-                                    <tr key={row[1]}>
-                                        <td>{row[0]}</td>
-                                        <td>{row[1]}</td>
-                                        <td>
+                                    <tr
+                                        className="border-t border-[#E5DDD3] transition-colors duration-200 hover:opacity-90"
+                                        key={row[1]}
+                                        style={{ backgroundColor: '#FFFFFF' }}
+                                    >
+                                        <td className="px-5 py-4 font-lato text-sm font-semibold text-[#7EBDC2]">
+                                            {row[0]}
+                                        </td>
+                                        <td className="px-5 py-4 font-lato text-sm font-medium text-[#231F20]">
+                                            {row[1]}
+                                        </td>
+                                        <td className="px-5 py-4">
                                             <span
-                                                className={`tag ${row[2] === 'Verified Contributor' ? 'tag-green' : 'tag-blue'}`}
+                                                className={`inline-block rounded-full px-3 py-1 font-lato text-xs font-semibold ${
+                                                    row[2] === 'Verified Contributor'
+                                                        ? 'bg-[#DCEFE8] text-[#16A34A]'
+                                                        : 'bg-[#DCE9F5] text-[#2563EB]'
+                                                }`}
                                             >
                                                 {row[2]}
                                             </span>
                                         </td>
-                                        <td>{row[3]}</td>
-                                        <td>{row[4]}</td>
+                                        <td className="px-5 py-4 font-lato text-sm text-[#231F20]">{row[3]}</td>
+                                        <td className="px-5 py-4 font-lato text-sm font-semibold text-[#231F20]">
+                                            {row[4]}
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -1291,32 +1562,55 @@ function LeaderboardView({ openPolicy }: { openPolicy: () => void }) {
                     </div>
                 </div>
                 <div className="card badge-panel">
-                    <div>
-                        <div className="badge-seal">
-                            <Award />
+                    <div className="flex flex-col items-center rounded-3xl bg-white p-8 text-center">
+                        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#EBDCCD] text-[#231F20]">
+                            <Award className="size-9" />
                         </div>
-                        <h2><b>Verified MILDA Contributor</b></h2>
-                        <p className="muted small">
-                            A course-completion badge showing that the user
-                            finished MILDA training and the final Digital
-                            Verification Portfolio.
+                        <h2 className="mb-2 font-josefin text-xl font-bold text-[#231F20]">
+                            Verified MILDA Contributor
+                        </h2>
+                        <p className="mb-6 max-w-xs font-lato text-sm leading-relaxed text-[#707070]">
+                            A course-completion badge showing that the user finished MILDA
+                            training and the final Digital Verification Portfolio.
                         </p>
-                        <div className="requirement-list">
-                            <div className="requirement done">
-                                ✓ Complete Modules 1–6
+
+                        <div className="mb-6 flex w-full flex-col gap-3 text-left">
+                            <div className="flex items-center gap-3 rounded-2xl bg-[#F3F0EC] p-3">
+                                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#16A34A] font-lato text-xs font-bold text-white">
+                                    ✓
+                                </span>
+                                <span className="font-lato text-sm font-medium text-[#231F20]">
+                                    Complete Modules 1–6
+                                </span>
                             </div>
-                            <div className="requirement">
-                                ○ Complete Modules 7–11
+                            <div className="flex items-center gap-3 rounded-2xl bg-[#F3F0EC] p-3">
+                                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[#9A9A9A] font-lato text-xs font-bold text-[#9A9A9A]">
+                                    ○
+                                </span>
+                                <span className="font-lato text-sm font-medium text-[#707070]">
+                                    Complete Modules 7–11
+                                </span>
                             </div>
-                            <div className="requirement">
-                                ○ Submit Digital Verification Portfolio
+                            <div className="flex items-center gap-3 rounded-2xl bg-[#F3F0EC] p-3">
+                                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[#9A9A9A] font-lato text-xs font-bold text-[#9A9A9A]">
+                                    ○
+                                </span>
+                                <span className="font-lato text-sm font-medium text-[#707070]">
+                                    Submit Digital Verification Portfolio
+                                </span>
                             </div>
-                            <div className="requirement">
-                                ○ Pass instructor review
+                            <div className="flex items-center gap-3 rounded-2xl bg-[#F3F0EC] p-3">
+                                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border border-[#9A9A9A] font-lato text-xs font-bold text-[#9A9A9A]">
+                                    ○
+                                </span>
+                                <span className="font-lato text-sm font-medium text-[#707070]">
+                                    Pass instructor review
+                                </span>
                             </div>
                         </div>
+
                         <button
-                            className="btn btn-outline policy-button"
+                            className="rounded-lg border border-transparent bg-[#efe6dd] px-6 py-3 font-josefin text-base font-semibold text-[#231f20] transition-all duration-300 ease-in-out hover:rounded-3xl hover:bg-[#7EBDC2] hover:text-black cursor-pointer"
                             onClick={openPolicy}
                             type="button"
                         >
@@ -1344,7 +1638,7 @@ function InstructorView({ toast }: { toast: (message: string) => void }) {
 
     return (
         <section className="view active">
-            <div className="stats-grid">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                 <StatCard
                     detail="Across 4 sections"
                     icon={Users}
@@ -1370,26 +1664,42 @@ function InstructorView({ toast }: { toast: (message: string) => void }) {
                     value="842"
                 />
             </div>
-            <div className="grid-2">
-                <div className="card">
-                    <div className="card-header">
+
+            <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="rounded-3xl bg-white p-6">
+                    <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h3>Badge Eligibility Queue</h3>
-                            <div className="small muted">
+                            <h3 className="font-josefin text-lg font-bold text-[#231F20]">
+                                Badge Eligibility Queue
+                            </h3>
+                            <p className="mt-1 font-lato text-sm text-[#707070]">
                                 Review course completion and final portfolios.
-                            </div>
+                            </p>
                         </div>
-                        <span className="tag tag-amber">12 pending</span>
+                        <span
+                            className="rounded-full px-3 py-1 font-lato text-xs font-semibold text-[#231F20]"
+                            style={{ backgroundColor: '#EBDCCD' }}
+                        >
+                            12 pending
+                        </span>
                     </div>
-                    <div className="queue">
+                    <div className="flex flex-col gap-3">
                         {queue.map(([student, detail]) => (
-                            <div className="queue-item" key={student}>
+                            <div
+                                className="flex items-center justify-between gap-4 rounded-2xl p-4"
+                                key={student}
+                                style={{ backgroundColor: '#F3F0EC' }}
+                            >
                                 <div>
-                                    <strong>{student}</strong>
-                                    <p>{detail}</p>
+                                    <strong className="block font-lato text-sm font-semibold text-[#231F20]">
+                                        {student}
+                                    </strong>
+                                    <p className="mt-0.5 font-lato text-xs text-[#707070]">
+                                        {detail}
+                                    </p>
                                 </div>
                                 <button
-                                    className="btn btn-outline"
+                                    className="flex-shrink-0 rounded-full border border-[#7EBDC2] bg-white px-4 py-2 font-lato text-xs font-semibold text-[#231F20] transition-colors duration-200 hover:bg-[#7EBDC2] cursor-pointer"
                                     onClick={() =>
                                         toast(
                                             'Review workspace opened in the full system',
@@ -1403,17 +1713,25 @@ function InstructorView({ toast }: { toast: (message: string) => void }) {
                         ))}
                     </div>
                 </div>
-                <div className="card">
-                    <h3>Section Progress</h3>
-                    <div className="feed">
+
+                <div className="rounded-3xl bg-white p-6">
+                    <h3 className="mb-6 font-josefin text-lg font-bold text-[#231F20]">
+                        Section Progress
+                    </h3>
+                    <div className="flex flex-col gap-5">
                         {sections.map(([section, progress]) => (
-                            <div className="feed-item" key={section}>
-                                <div className="feed-meta">
-                                    <strong>{section}</strong>
-                                    <span>{progress}%</span>
+                            <div key={section}>
+                                <div className="mb-2 flex items-center justify-between font-lato text-sm">
+                                    <strong className="font-semibold text-[#231F20]">
+                                        {section}
+                                    </strong>
+                                    <span className="text-[#707070]">{progress}%</span>
                                 </div>
-                                <div className="linear-progress">
-                                    <span style={{ width: `${progress}%` }} />
+                                <div className="h-2 w-full overflow-hidden rounded-full bg-[#EFE6DD]">
+                                    <div
+                                        className="h-full rounded-full bg-[#7EBDC2]"
+                                        style={{ width: `${progress}%` }}
+                                    />
                                 </div>
                             </div>
                         ))}
@@ -1451,39 +1769,80 @@ function AdminView({ toast }: { toast: (message: string) => void }) {
             'Only qualified course finishers receive the Verified MILDA Contributor Badge.',
         ],
     ];
+    const privacyControls = [
+        {
+            title: 'Minimize stored personal data',
+            detail: 'Only information required for learning and moderation is retained.',
+        },
+        {
+            title: 'Protect uploaded content',
+            detail: 'Access is restricted to authorized reviewers.',
+        },
+        {
+            title: 'Maintain moderation logs',
+            detail: 'Status changes and appeals remain auditable.',
+        },
+    ];
+    const auditLog = [
+        [
+            'Moderator updated content status',
+            'Needs Verification → Under Review',
+            '10:42',
+        ],
+        ['New appeal submitted', 'Case #MILDA-2041', '09:18'],
+        [
+            'Trusted source accepted',
+            'Official university advisory',
+            'Yesterday',
+        ],
+    ];
 
     return (
         <section className="view active">
-            <div className="notice">
-                <strong>
+            <div className="rounded-3xl p-6" style={{ backgroundColor: '#EBDCCD' }}>
+                <strong className="font-josefin text-base font-bold text-[#231F20]">
                     Responsible AI, Privacy, and Community Safeguards
                 </strong>
-                <br />
-                AI analysis is advisory; evidence is required; reports and
-                sources are moderated; users may dispute or appeal results;
-                personal information must be protected; and community voting
-                alone does not establish factual accuracy.
+                <p className="mt-2 font-lato text-sm leading-relaxed text-[#4B4B4B]">
+                    AI analysis is advisory; evidence is required; reports and
+                    sources are moderated; users may dispute or appeal results;
+                    personal information must be protected; and community
+                    voting alone does not establish factual accuracy.
+                </p>
             </div>
-            <div className="grid-2">
-                <div className="card">
-                    <div className="card-header">
+
+            <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="rounded-3xl bg-white p-6">
+                    <div className="mb-6 flex items-center justify-between">
                         <div>
-                            <h3>Moderation Queue</h3>
-                            <div className="small muted">
+                            <h3 className="font-josefin text-lg font-bold text-[#231F20]">
+                                Moderation Queue
+                            </h3>
+                            <p className="mt-1 font-lato text-sm text-[#707070]">
                                 Priority items requiring evidence-based review
-                            </div>
+                            </p>
                         </div>
-                        <span className="tag tag-red">8 urgent</span>
+                        <span className="rounded-full bg-[#F5D5D0] px-3 py-1 font-lato text-xs font-semibold text-[#DC2626]">
+                            8 urgent
+                        </span>
                     </div>
-                    <div className="queue">
+                    <div className="flex flex-col gap-3">
                         {moderationQueue.map(([title, detail]) => (
-                            <div className="queue-item" key={title}>
+                            <div
+                                className="flex items-center justify-between gap-4 rounded-2xl p-4"
+                                key={title}
+                                style={{ backgroundColor: '#F3F0EC' }}
+                            >
                                 <div>
-                                    <strong>{title}</strong>
-                                    <p>{detail}</p>
+                                    <strong className="block font-lato text-sm font-semibold text-[#231F20]">
+                                        {title}
+                                    </strong>
+                                    <p className="mt-0.5 font-lato text-xs text-[#707070]">
+                                        {detail}
+                                    </p>
                                 </div>
                                 <button
-                                    className="btn btn-outline"
+                                    className="flex-shrink-0 rounded-full border border-[#7EBDC2] bg-white px-4 py-2 font-lato text-xs font-semibold text-[#231F20] transition-colors duration-200 hover:bg-[#7EBDC2] cursor-pointer"
                                     onClick={() =>
                                         toast(
                                             'Review workspace opened in the full system',
@@ -1497,70 +1856,87 @@ function AdminView({ toast }: { toast: (message: string) => void }) {
                         ))}
                     </div>
                 </div>
-                <div className="card">
-                    <h3>Safeguard Status</h3>
-                    <div className="feed">
+
+                <div className="rounded-3xl bg-white p-6">
+                    <h3 className="mb-6 font-josefin text-lg font-bold text-[#231F20]">
+                        Safeguard Status
+                    </h3>
+                    <div className="flex flex-col gap-3">
                         {safeguards.map(([title, detail]) => (
-                            <div className="feed-item" key={title}>
-                                <div className="feed-meta">
-                                    <strong>{title}</strong>
-                                    <span className="tag tag-green">
+                            <div
+                                className="rounded-2xl p-4"
+                                key={title}
+                                style={{ backgroundColor: '#F3F0EC' }}
+                            >
+                                <div className="mb-1 flex items-center justify-between gap-3">
+                                    <strong className="font-lato text-sm font-semibold text-[#231F20]">
+                                        {title}
+                                    </strong>
+                                    <span className="flex-shrink-0 rounded-full bg-[#DCEFE8] px-3 py-1 font-lato text-[11px] font-semibold text-[#16A34A]">
                                         Enabled
                                     </span>
                                 </div>
-                                <p>{detail}</p>
+                                <p className="font-lato text-xs leading-relaxed text-[#707070]">
+                                    {detail}
+                                </p>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
-            <div className="grid-2">
-                <div className="card">
-                    <h3>Audit Log</h3>
-                    <div className="audit-log">
-                        {[
-                            [
-                                'Moderator updated content status',
-                                'Needs Verification → Under Review',
-                                '10:42',
-                            ],
-                            [
-                                'New appeal submitted',
-                                'Case #MILDA-2041',
-                                '09:18',
-                            ],
-                            [
-                                'Trusted source accepted',
-                                'Official university advisory',
-                                'Yesterday',
-                            ],
-                        ].map(([title, detail, time]) => (
-                            <div className="audit-item" key={title}>
-                                <span className="audit-dot" />
-                                <div>
-                                    <strong>{title}</strong>
-                                    <div className="tiny muted">{detail}</div>
+
+            <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                <div className="rounded-3xl bg-white p-6">
+                    <h3 className="mb-6 font-josefin text-lg font-bold text-[#231F20]">
+                        Audit Log
+                    </h3>
+                    <div className="flex flex-col gap-4">
+                        {auditLog.map(([title, detail, time]) => (
+                            <div className="flex items-start gap-3" key={title}>
+                                <span
+                                    className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full"
+                                    style={{ backgroundColor: '#7EBDC2' }}
+                                />
+                                <div className="flex-1">
+                                    <strong className="block font-lato text-sm font-semibold text-[#231F20]">
+                                        {title}
+                                    </strong>
+                                    <div className="mt-0.5 font-lato text-xs text-[#707070]">
+                                        {detail}
+                                    </div>
                                 </div>
-                                <span className="tiny muted">{time}</span>
+                                <span className="flex-shrink-0 font-lato text-xs text-[#9A9A9A]">
+                                    {time}
+                                </span>
                             </div>
                         ))}
                     </div>
                 </div>
-                <div className="card">
-                    <h3>Privacy Controls</h3>
-                    <div className="checklist">
-                        <ChecklistItem
-                            detail="Only information required for learning and moderation is retained."
-                            title="Minimize stored personal data"
-                        />
-                        <ChecklistItem
-                            detail="Access is restricted to authorized reviewers."
-                            title="Protect uploaded content"
-                        />
-                        <ChecklistItem
-                            detail="Status changes and appeals remain auditable."
-                            title="Maintain moderation logs"
-                        />
+
+                <div className="rounded-3xl bg-white p-6">
+                    <h3 className="mb-6 font-josefin text-lg font-bold text-[#231F20]">
+                        Privacy Controls
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                        {privacyControls.map((item) => (
+                            <div
+                                className="flex items-start gap-3 rounded-2xl p-4"
+                                key={item.title}
+                                style={{ backgroundColor: '#F3F0EC' }}
+                            >
+                                <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#16A34A] font-lato text-xs font-bold text-white">
+                                    ✓
+                                </span>
+                                <div>
+                                    <strong className="block font-lato text-sm font-semibold text-[#231F20]">
+                                        {item.title}
+                                    </strong>
+                                    <p className="mt-0.5 font-lato text-xs leading-relaxed text-[#707070]">
+                                        {item.detail}
+                                    </p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -2030,7 +2406,13 @@ export default function Milda({ syllabusUrl }: MildaProps) {
                                 <Bell />
                                 <span className="dot" />
                             </button>
-                            <div className="avatar font-josefin">JC</div>
+                            <div className="avatar">
+                                <img
+                                    src="/images/avatar.png"
+                                    alt="User Avatar"
+                                    className="h-full w-full rounded-full object-cover"
+                                />
+                            </div>
                         </div>
                     </header>
                     <div className="content">
